@@ -4,8 +4,8 @@
 
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="31"
+        android:targetSdkVersion="33" />
 
 
     <application
@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name="com.example.indoorlbs.MainActivity">
+        <activity android:name="com.example.indoorlbs.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".NavigationActivity" >  </activity>
+        <activity android:name=".NavigationActivity" />
     </application>
 
 </manifest>

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MyAdapter extends BaseAdapter{
+public class MyAdapter extends BaseAdapter {
     private Context context;
     private List<String> list;
     private LayoutInflater inflate;
@@ -41,22 +41,22 @@ public class MyAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
-            convertView = inflate.inflate(R.layout.custom_list_item,null);
+        if (convertView == null) {
+            convertView = inflate.inflate(R.layout.custom_list_item, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.label = (TextView)convertView.findViewById(R.id.listTv);
+            viewHolder.label = (TextView) convertView.findViewById(R.id.listTv);
 
             convertView.setTag(viewHolder);
-        }else{
-            viewHolder = (ViewHolder)convertView.getTag();
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.label.setText(list.get(position));
 
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         public TextView label;
     }
 }

@@ -17,9 +17,17 @@ public class MapView extends View {
     // path 배열의 빈공간 식별자
     private static int INF = 9999;
 
-    public MapView(Context context) { super(context); }
-    public MapView(Context context, AttributeSet att)  { super(context, att); }
-    public MapView(Context context, AttributeSet att, int re) { super(context, att, re); }
+    public MapView(Context context) {
+        super(context);
+    }
+
+    public MapView(Context context, AttributeSet att) {
+        super(context, att);
+    }
+
+    public MapView(Context context, AttributeSet att, int re) {
+        super(context, att, re);
+    }
 
     // 맵 이미지 로드 변수
     private Bitmap floor_eighth;
@@ -41,13 +49,10 @@ public class MapView extends View {
     public float startX, startY;   // 경로 시작지점
 
 
-
     // ArrayList<Test> arr = new ArrayList<Test>();
 
 
-
-    public  void init()
-    {
+    public void init() {
 
         IsNaviOn = false;
 
@@ -67,25 +72,22 @@ public class MapView extends View {
     }
 
     // 경로 탐색시 시작지점
-    public void setStartPos()
-    {
+    public void setStartPos() {
         startX = bk.get(pathData[0]).getX();
         startY = bk.get(pathData[0]).getY();
     }
 
 
-    public void setBeacon(ArrayList<BeaconWorker> bk)
-    {
+    public void setBeacon(ArrayList<BeaconWorker> bk) {
         this.bk = bk;
     }
 
     @Override
-    public  void onDraw(Canvas canvas)
-    {
+    public void onDraw(Canvas canvas) {
 
         // paint
-        Paint paint  = new Paint();
-        paint.setColor(Color.rgb(255,94,0));
+        Paint paint = new Paint();
+        paint.setColor(Color.rgb(255, 94, 0));
 
 
 
@@ -94,23 +96,20 @@ public class MapView extends View {
          */
 
         // 사진 580 x 787 을 화면크기에 맞게 1.89배 조정
-        if (floor == 7)
-        {
+        if (floor == 7) {
             floor_seventh = BitmapFactory.decodeResource(getResources(), R.drawable.floor_7);
             imageSize = Bitmap.createScaledBitmap(floor_seventh,
                     580 * 192 / 100,
                     787 * 192 / 100,
                     true);
-            canvas.drawBitmap(imageSize, -5 , -6 , null);
-        }
-        else if(floor == 8)
-        {
+            canvas.drawBitmap(imageSize, -5, -6, null);
+        } else if (floor == 8) {
             floor_eighth = BitmapFactory.decodeResource(getResources(), R.drawable.floor_8);
             imageSize = Bitmap.createScaledBitmap(floor_eighth,
                     580 * 189 / 100,
                     787 * 189 / 100,
                     true);
-            canvas.drawBitmap(imageSize, 0 , 0 , null);
+            canvas.drawBitmap(imageSize, 0, 0, null);
         }
 
 
@@ -130,12 +129,11 @@ public class MapView extends View {
         pathPaint.setStrokeJoin(Paint.Join.MITER);
 
         // 네비 서비스 실행시만
-        if(IsNaviOn) {
+        if (IsNaviOn) {
 
             // path 먼저 이어놓기
             path.moveTo(startX, startY);        // 시작점
-            for (int i = 1; i < pathData.length; i++)
-            {   // 나머지 경유지점 간선
+            for (int i = 1; i < pathData.length; i++) {   // 나머지 경유지점 간선
                 if (pathData[i] != INF)
                     path.lineTo(
                             bk.get(pathData[i]).getX(),
@@ -163,17 +161,34 @@ public class MapView extends View {
     }
 
 
+    public void setFloor(int _floor) {
+        floor = _floor;
+    }
 
-    public void setFloor(int _floor) { floor = _floor; }
+    public void setX(float _x1) {
+        addX = _x1;
+    }
 
-    public void setX(float _x1) {  addX = _x1;}
-    public void setY(float _y1) {  addY = _y1;}
+    public void setY(float _y1) {
+        addY = _y1;
+    }
 
-    public void setStartX(float _x1) {  x1 = _x1; addX = 0;}
-    public void setStartY(float _y1) {  y1 = _y1; addY = 0;}
+    public void setStartX(float _x1) {
+        x1 = _x1;
+        addX = 0;
+    }
+
+    public void setStartY(float _y1) {
+        y1 = _y1;
+        addY = 0;
+    }
 
 
+    public void setPath(int _path[]) {
+        pathData = _path;
+    }
 
-    public void setPath(int _path[]) { pathData = _path; }
-    public void setIsNaviOn(boolean naviOn) { IsNaviOn = naviOn; }
+    public void setIsNaviOn(boolean naviOn) {
+        IsNaviOn = naviOn;
+    }
 }

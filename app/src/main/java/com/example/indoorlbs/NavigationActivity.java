@@ -2,27 +2,22 @@ package com.example.indoorlbs;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class  NavigationActivity extends Activity
-        implements View.OnClickListener
-{
+public class NavigationActivity extends Activity
+        implements View.OnClickListener {
 
 
     private EditText dstStr;
@@ -40,13 +35,14 @@ public class  NavigationActivity extends Activity
 
     int current_NODE_NAME = 0;
     int dest_NODE_NAME = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigator);
 
         Intent intent = getIntent();
-        current_NODE_NAME = intent.getIntExtra("NODE_NAME",0);
+        current_NODE_NAME = intent.getIntExtra("NODE_NAME", 0);
 
 
         listView = (ListView) findViewById(R.id.list);
@@ -57,22 +53,24 @@ public class  NavigationActivity extends Activity
         arrayList = new ArrayList<>();
         arrayList.addAll(list);
 
-        adapter = new MyAdapter(list,getApplicationContext());
+        adapter = new MyAdapter(list, getApplicationContext());
 
         listView.setAdapter(adapter);
 
 
-        dstStr = (EditText)findViewById(R.id.edtDst) ;
+        dstStr = (EditText) findViewById(R.id.edtDst);
 
         dstStr.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable edit)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable edit) {
                 String filterText = dstStr.getText().toString();
 
                 search(filterText);
@@ -83,9 +81,9 @@ public class  NavigationActivity extends Activity
         srcStr = (EditText) findViewById(R.id.edtStart);
         setCurrentPosName(current_NODE_NAME);
 
-        btnStart = (Button)findViewById(R.id.btnInput);
+        btnStart = (Button) findViewById(R.id.btnInput);
         btnStart.setOnClickListener(this);
-        btnReturn = (Button)findViewById(R.id.btnCancel);
+        btnReturn = (Button) findViewById(R.id.btnCancel);
         btnReturn.setOnClickListener(this);
 
 
@@ -102,14 +100,11 @@ public class  NavigationActivity extends Activity
             list.addAll(arrayList);
         }
         // 문자 입력을 할때..
-        else
-        {
+        else {
             // 리스트의 모든 데이터를 검색한다.
-            for(int i = 0;i < arrayList.size(); i++)
-            {
+            for (int i = 0; i < arrayList.size(); i++) {
                 // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
-                if (arrayList.get(i).toLowerCase().contains(charText))
-                {
+                if (arrayList.get(i).toLowerCase().contains(charText)) {
                     // 검색된 데이터를 리스트에 추가한다.
                     list.add(arrayList.get(i));
                 }
@@ -128,23 +123,22 @@ public class  NavigationActivity extends Activity
         });
     }
 
-    public void init()
-    {
+    public void init() {
         nw = new NaviWorker();
         nw.init();
     }
 
-    public void settingList(){
-        list.add("8공 715호") ;
-        list.add("8공 716호") ;
-        list.add("8공 717호") ;
-        list.add("8공 714호") ;
-        list.add("8공 715호") ;
-        list.add("8공 714호") ;
-        list.add("8공 716호") ;
-        list.add("8공 717호") ;
-        list.add("8공 701호") ;
-        list.add("8공 702호") ;
+    public void settingList() {
+        list.add("8공 715호");
+        list.add("8공 716호");
+        list.add("8공 717호");
+        list.add("8공 714호");
+        list.add("8공 715호");
+        list.add("8공 714호");
+        list.add("8공 716호");
+        list.add("8공 717호");
+        list.add("8공 701호");
+        list.add("8공 702호");
         list.add("8공 7층 엘리베이터");
         list.add("8공 7층 연구실");
         list.add("8공 7층 강의실");
@@ -153,24 +147,23 @@ public class  NavigationActivity extends Activity
     @Override
     public void onClick(View v) {
 
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             // 경로 탐색 버튼을 실행시
             case R.id.btnInput:
 
                 // 경로 계산부 초기화
                 nw.init();
 
-                switch (dstStr.getText().toString()){
-                    case "8공 7층 연구실":{
+                switch (dstStr.getText().toString()) {
+                    case "8공 7층 연구실": {
                         dest_NODE_NAME = 0;
                         break;
                     }
-                    case "8공 7층 엘리베이터":{
+                    case "8공 7층 엘리베이터": {
                         dest_NODE_NAME = 2;
                         break;
                     }
-                    case "8공 7층 강의실":{
+                    case "8공 7층 강의실": {
                         dest_NODE_NAME = 3;
                         break;
                     }
@@ -184,11 +177,11 @@ public class  NavigationActivity extends Activity
                         getBaseContext(),
                         MainActivity.class);
 
-                in.putExtra("start",current_NODE_NAME );  // start 데이터 전달
-                in.putExtra("destination",dest_NODE_NAME );  // dest(목적지) 전달
-                in.putExtra("path",nw.getPath() );   // 경로 배열 전달
+                in.putExtra("start", current_NODE_NAME);  // start 데이터 전달
+                in.putExtra("destination", dest_NODE_NAME);  // dest(목적지) 전달
+                in.putExtra("path", nw.getPath());   // 경로 배열 전달
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);  // 액티비티 새로 생성안하고 자기자신 호출
-                                                                                                 // 최상위 태스크로 위치
+                // 최상위 태스크로 위치
 
                 startActivity(in);
                 break;
@@ -200,21 +193,22 @@ public class  NavigationActivity extends Activity
 
         }
     }
-    public void setCurrentPosName(int current_NODE_NAME){
-        switch (current_NODE_NAME){
-            case 0:{
+
+    public void setCurrentPosName(int current_NODE_NAME) {
+        switch (current_NODE_NAME) {
+            case 0: {
                 srcStr.setText("8공 7층 연구실");
                 break;
             }
-            case 1:{
+            case 1: {
                 srcStr.setText("8공 702호");
                 break;
             }
-            case 2:{
+            case 2: {
                 srcStr.setText("8공 7층 엘리베이터");
                 break;
             }
-            case 3:{
+            case 3: {
                 srcStr.setText("8공 7층 강의실");
                 break;
             }

@@ -36,8 +36,7 @@ public class Calculator {
 
 
     // 초기화 메소드
-    public void init()
-    {
+    public void init() {
         // 변수 초기화
         preAcc = 0;
         newAcc = 0;
@@ -66,8 +65,7 @@ public class Calculator {
      *
      * *******************************************/
 
-    public void cal_PDR()
-    {
+    public void cal_PDR() {
 
 
         /*
@@ -99,7 +97,7 @@ public class Calculator {
          */
 
         cal_LPF();
-        if(HFData_amount == HFilter_data.length) HFData_amount = 0;
+        if (HFData_amount == HFilter_data.length) HFData_amount = 0;
 
 
 
@@ -117,22 +115,18 @@ public class Calculator {
         cal_Step();
 
 
-
-
-
     }
-    public void cal_Vector()
-    {
+
+    public void cal_Vector() {
         accVector = Math.sqrt(
                 acc_X * acc_X +
                         acc_Y * acc_Y +
                         acc_Z * acc_Z);
     }
 
-    public void cal_HPF()
-    {
+    public void cal_HPF() {
         // 적당한 상수
-        final float alpha = (float)0.8;               // alpha = t / (t + Dt)
+        final float alpha = (float) 0.8;               // alpha = t / (t + Dt)
 
         // 현재 값에 중력 데이터를 빼서 가속도를 계산한다.
         preAcc = alpha * preAcc + (1 - alpha) * accVector;
@@ -143,24 +137,21 @@ public class Calculator {
         HFilter_data[HFData_amount++] = newAcc;
     }
 
-    public void cal_LPF()
-    {
+    public void cal_LPF() {
 
-        if(HFData_amount > 3)
-        {
+        if (HFData_amount > 3) {
             int i, firstIndex = 0;
             double data = 0;
             // 5개 이상 데이터를 얻은 이후부터 실행
             int midIndex = HFData_amount - 4;
 
 
-            if(midIndex < 5) firstIndex = midIndex;
-            else if(midIndex >= 5 && midIndex < HFilter_data.length) firstIndex = midIndex - 5;
+            if (midIndex < 5) firstIndex = midIndex;
+            else if (midIndex >= 5 && midIndex < HFilter_data.length) firstIndex = midIndex - 5;
 
 
             // 데이터 10개의 평균을 낸다.
-            for (i = firstIndex; i < midIndex + 4; i++)
-            {
+            for (i = firstIndex; i < midIndex + 4; i++) {
                 data += HFilter_data[i];
             }
             data = data / 10.0;
@@ -170,12 +161,10 @@ public class Calculator {
             adjustValue++;   // 정상적인 LPF값이면 조절변수 +1
 
 
-
             // 정지 상태일때를 걸러내기 위한 알고리즘
             // 정지상태일때의 데이터 평균값(-0.08 <= data <= 0.08)이 5번 연속이면, 그 값은 버린다.  정지 상태라고 판정
             // 이동상태의 데이터 평균값이 5번이상 연속적으로 입력된 경우에서 데이터가 0이면 zeroCount +1한다.
-            if(data < 0.08 && data > -0.08 && adjustValue >= 5)
-            {
+            if (data < 0.08 && data > -0.08 && adjustValue >= 5) {
                 zeroCount++;
                 adjustValue = 0;
             }
@@ -183,24 +172,22 @@ public class Calculator {
     }
 
 
-    public void cal_Step()
-    {
+    public void cal_Step() {
 
         // 한 주기를 잘라내기 위하여 가속도 센서가 0에 근접할 때 count를 올리고
         // count 2가 되면 한 주기로 인식한다.
-        if(zeroCount == 2){
+        if (zeroCount == 2) {
 
             // 스마트폰이 조금만 민감하게 움직여도 가속도가 변화하여
             // 그 미세한 정도를 어느정도 필터하기 위한 과정.
             // 한 주기동안 얻어낸 데이터에서 가속도 절대값이 0.7이상 있을 경우만 승인.
             boolean access = false;
-            for (int i = 0 ; i < LFilterData_amount ; i++)
-            {
-                if(LFilter_data[i] >= 0.7 || LFilter_data[i] <= -0.7)
+            for (int i = 0; i < LFilterData_amount; i++) {
+                if (LFilter_data[i] >= 0.7 || LFilter_data[i] <= -0.7)
                     access = true;
             }
 
-            if(access){
+            if (access) {
                 // 이제 한 주기를 잘라내 걸음 단위로 잘라내었다.
                 // 걸음의 보폭을 계산한다.
                 cal_StepSize();
@@ -217,17 +204,15 @@ public class Calculator {
     }
 
     // Weinberg Approach
-    public void cal_StepSize()
-    {
+    public void cal_StepSize() {
 
         // 순차방문을 통해 비교하여 max와 min을 찾아낸다.
         double max = LFilter_data[0], min = LFilter_data[0];
         double temp;
 
-        for (int i = 1; i<LFilter_data.length ; i++)
-        {
-            if(max < LFilter_data[i]) max = LFilter_data[i];
-            if(min > LFilter_data[i]) min = LFilter_data[i];
+        for (int i = 1; i < LFilter_data.length; i++) {
+            if (max < LFilter_data[i]) max = LFilter_data[i];
+            if (min > LFilter_data[i]) min = LFilter_data[i];
         }
 
         // 보폭 상수 0.55
@@ -235,11 +220,10 @@ public class Calculator {
 
 
         // Weinberg Approach
-        temp = k*Math.pow(max-min, 1.0/4.0);
+        temp = k * Math.pow(max - min, 1.0 / 4.0);
 
         // 정지 상태일때의 값 한번더 필터,  0.2이상만 값으로 인정
-        if(temp >= 0.2)
-        {
+        if (temp >= 0.2) {
             distance += temp;
             IsMoved = true;
         }
@@ -247,16 +231,26 @@ public class Calculator {
 
 
     // 가속도 값 받는 함수
-    public void setAcc(float _acc_X, float _acc_Y, float _acc_Z)
-    {
+    public void setAcc(float _acc_X, float _acc_Y, float _acc_Z) {
         acc_X = _acc_X;
         acc_Y = _acc_Y;
         acc_Z = _acc_Z;
     }
 
 
-    public double getDistance() { return distance; }
-    public void setDistance(double _distance) { distance = _distance; }
-    public boolean getIsMoved() { return IsMoved; }
-    public void setIsMoved(boolean _isMoved) { IsMoved = _isMoved; }
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double _distance) {
+        distance = _distance;
+    }
+
+    public boolean getIsMoved() {
+        return IsMoved;
+    }
+
+    public void setIsMoved(boolean _isMoved) {
+        IsMoved = _isMoved;
+    }
 }

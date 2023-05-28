@@ -3,7 +3,9 @@ package com.example.indoorlbs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +18,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomListView extends Dialog implements View.OnClickListener{
+public class CustomListView extends Dialog implements View.OnClickListener {
     private ListView listView;
     private EditText destEt, currentEt;
     private Button contactBtn;
@@ -42,9 +44,9 @@ public class CustomListView extends Dialog implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_list_view);
 
-        listView = (ListView)findViewById(R.id.pathListView);
-        currentEt = (EditText)findViewById(R.id.currentEt);      // 현재 위치
-        contactBtn = (Button)findViewById(R.id.contactBtn);      // 경로 검색 버튼
+        listView = (ListView) findViewById(R.id.pathListView);
+        currentEt = (EditText) findViewById(R.id.currentEt);      // 현재 위치
+        contactBtn = (Button) findViewById(R.id.contactBtn);      // 경로 검색 버튼
 
         list = new ArrayList<String>();
         settingList();
@@ -52,7 +54,7 @@ public class CustomListView extends Dialog implements View.OnClickListener{
         arrayList = new ArrayList<>();
         arrayList.addAll(list);
 
-        adapter = new MyAdapter(list,context);
+        adapter = new MyAdapter(list, context);
 
         listView.setAdapter(adapter);
         contactBtn.setOnClickListener(this);
@@ -60,14 +62,17 @@ public class CustomListView extends Dialog implements View.OnClickListener{
 
         init();
 
-        destEt = (EditText)findViewById(R.id.destEt);       // 목적지 위치
+        destEt = (EditText) findViewById(R.id.destEt);       // 목적지 위치
 
         destEt.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -87,8 +92,7 @@ public class CustomListView extends Dialog implements View.OnClickListener{
         });
     }
 
-    public void init()
-    {
+    public void init() {
         nw = new NaviWorker();
         nw.init();
 
@@ -97,10 +101,10 @@ public class CustomListView extends Dialog implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.contactBtn){
+        if (v.getId() == R.id.contactBtn) {
 
             nw.init();
-            String curStr= currentEt.getText().toString();
+            String curStr = currentEt.getText().toString();
             String dstStr = destEt.getText().toString();
             mainActivity.setStart(Integer.parseInt(curStr));
             mainActivity.setDst(Integer.parseInt(dstStr));
@@ -108,9 +112,9 @@ public class CustomListView extends Dialog implements View.OnClickListener{
 
             mainActivity.setPath(nw.getPath());
 
-            Intent intent = new Intent(context,MainActivity.class );
+            Intent intent = new Intent(context, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);  // 액티비티 새로 생성안하고 자기자신 호출
-          //  intent.putExtra("Destination",destEt.getText());
+            //  intent.putExtra("Destination",destEt.getText());
 
             context.startActivity(intent);
             this.dismiss();
@@ -129,14 +133,11 @@ public class CustomListView extends Dialog implements View.OnClickListener{
             list.addAll(arrayList);
         }
         // 문자 입력을 할때..
-        else
-        {
+        else {
             // 리스트의 모든 데이터를 검색한다.
-            for(int i = 0;i < arrayList.size(); i++)
-            {
+            for (int i = 0; i < arrayList.size(); i++) {
                 // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
-                if (arrayList.get(i).toLowerCase().contains(charText))
-                {
+                if (arrayList.get(i).toLowerCase().contains(charText)) {
                     // 검색된 데이터를 리스트에 추가한다.
                     list.add(arrayList.get(i));
                 }
@@ -145,7 +146,8 @@ public class CustomListView extends Dialog implements View.OnClickListener{
         // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
         adapter.notifyDataSetChanged();
     }
-    private void settingList(){
+
+    private void settingList() {
         list.add("8층 814호");
         list.add("8층 815호");
         list.add("8층 816호");
