@@ -1,6 +1,7 @@
 package com.example.indoorlbs;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.estimote.sdk.Beacon;

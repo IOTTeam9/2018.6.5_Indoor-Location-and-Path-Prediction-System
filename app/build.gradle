@@ -21,6 +21,9 @@ android {
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
